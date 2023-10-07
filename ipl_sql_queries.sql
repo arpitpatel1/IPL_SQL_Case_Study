@@ -1,12 +1,12 @@
--- created a view for future use
+
 use ipl;
+-- Some Preproccesing
 
 -- ALTER TABLE matches2
 -- CHANGE COLUMN old_column2 new_column2 INT,
 -- CHANGE COLUMN id matches2_id INT;
 
 create view joined as select * from ipl.balls t1 left join ipl.matches t2 on t1.id1=t2.id left join ipl.matches2 t3 on t1.id1=t3.matches2_id;
-
 create table joined_table as select * from ipl.balls t1 left join ipl.matches t2 on t1.id1=t2.id left join ipl.matches2 t3 on t1.id1=t3.matches2_id;
 
 ALTER table joined_table
