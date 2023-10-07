@@ -1,6 +1,24 @@
 -- created a view for future use
-create view joined as select * from ipl.balls t1 left join ipl.matches t2 on t1.id1=t2.id;
 use ipl;
+
+-- ALTER TABLE matches2
+-- CHANGE COLUMN old_column2 new_column2 INT,
+-- CHANGE COLUMN id matches2_id INT;
+
+create view joined as select * from ipl.balls t1 left join ipl.matches t2 on t1.id1=t2.id left join ipl.matches2 t3 on t1.id1=t3.matches2_id;
+
+create table joined_table as select * from ipl.balls t1 left join ipl.matches t2 on t1.id1=t2.id left join ipl.matches2 t3 on t1.id1=t3.matches2_id;
+
+ALTER table joined_table
+ADD COLUMN over_type varchar(12);
+
+UPDATE joined_table
+SET over_type = 
+    CASE 
+        WHEN overs between 0 and 6 THEN 'power_play'
+        WHEN overs between 7 and 16 THEN 'middle_overs'
+        ELSE 'death_overs'
+    END;
 -------------------------------------------------------------------------------------------------------------------
 -- 1) Top 5 batsman in specific season
 SELECT batter,sum(batsman_run) as runs FROM joined
@@ -138,12 +156,12 @@ select t.team1,count(*) from (select team1 from ipl.matches where MatchNumber='F
 union all
 select team2 from ipl.matches where MatchNumber='Final') t group by t.team1 order by count(*) desc;
 -------------------------------------------------------------------------------------------------------------------------
--- 23) strike rate of specific batsman in specific overs
+-- 23) strike rate of specific batsman in specific over_type(power_play,middle_overs,death_overs)
 SELECT (sum(batsman_run)/count(*))*100 as strike_rate 
-FROM (select * from ipl.balls where overs between 1 and 6) t
+FROM (select * from ipl.joined_table where over_type = 'death_overs') t
 where batter='V kohli';
 ----------------------------------------------------------------------------------------------------------------------
--- Highest/Lowest scores of each season by wich team
+-- 24) Highest/Lowest scores of each season by wich team
 select season,BattingTeam,max_score from 
 	(select season,BattingTeam,sum(total_run) as max_score, 
 	rank() over(partition by season order by sum(total_run) desc) as ranks 
@@ -156,7 +174,7 @@ select season,BattingTeam,max_score from
 	from joined group by season,id1,battingteam) t
 where ranks =1;
 ------------------------------------------------------------------------------------------------------------------------
--- Highest run scorer and highest wicket taker team of each season
+-- 25) Highest run scorer and highest wicket taker team of each season
 select season,BattingTeam,total_runs from 
 	(select season,BattingTeam,sum(total_run) as total_runs, 
 	rank() over(partition by season order by sum(total_run) asc) as ranks 
@@ -169,11 +187,11 @@ select season,BattingTeam,total_wickets from
 	from joined group by season,battingteam) t
 where ranks =1;
 ------------------------------------------------------------------------------------------------------------------
--- In which overs given bowler takes most wicktes
-select overs,sum(isWicketDelivery) as wicket_taken 
-from ipl.balls where bowler='SL Malinga' group by overs order by wicket_taken desc;
+-- 26) In which overs given bowler takes most wicktes
+select over_type,sum(isWicketDelivery) as wicket_taken 
+from ipl.joined_table where bowler='SL Malinga' group by over_type order by wicket_taken desc;
 ---------------------------------------------------------------------------------------------------------------
--- How toss win impacts the match win (which team utilized the toss win most)
+-- 27) How toss win impacts the match win (which team utilized the toss win most)
 select team,matches_played,toss_won,match_won,match_won_with_toss_win,(match_won_with_toss_win/toss_won)*100 as percentage 
 from 
 (select tosswinner,count(*) as toss_won, sum(case when tosswinner=winningteam then 1 else 0 end) as match_won_with_toss_win from ipl.matches group by TossWinner) t1 join 
@@ -186,17 +204,33 @@ join
     FROM ipl.matches) t group by team) t3
 on t1.tosswinner=t3.team order by percentage desc;
 
+-- 28) Which Player has played for most number of Teams in IPL
+SELECT batter, COUNT(DISTINCT BattingTeam) AS played
+FROM joined_table
+GROUP BY batter
+ORDER BY played DESC;
 
--- Fast Vs Spin in Rajiv Gandhi International Stadium
--- Which Player has played for most number of Teams in IPL
--- Most matches captained by players
--- Players involved in most IPL match victories
+-- 29) Most matches captained by players
+SELECT home_captain as player, captained+captained_2 as captained
+FROM (
+    SELECT home_captain, COUNT(*) AS captained
+    FROM matches2
+    GROUP BY home_captain
+    ORDER BY captained DESC
+) AS t1
+INNER JOIN (
+    SELECT away_captain, COUNT(*) AS captained_2
+    FROM matches2
+    GROUP BY away_captain
+    ORDER BY captained_2 DESC
+) AS t2 ON t1.home_captain = t2.away_captain order by captained desc;
 
--- Matches Captained and won by Steve Smith in IPL
+-- 30) Players involved in most IPL final
+select batter,COUNT(DISTINCT ID) as count from joined_table where MatchNumber='Final' group by batter order by count desc;
 
+-- top captains
 -- lowest economy rate
 -- toss effect on win
-
 
 
 
