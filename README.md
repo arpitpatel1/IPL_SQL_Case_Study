@@ -21,3 +21,35 @@ Thank you for joining me on this exciting SQL adventure through the world of cri
 
 *Happy querying!* 🧐📁
 
+## Questions
+
+1) Top 5 batsman in specific season
+2) Top 5 bowler(wicket Taken) in specific season
+3) Bowlers with most five wicket hauls in Indian Premier League
+4) Top 5 team score
+5) Top 5 individual score
+6) Players with most centuries in Indian Premier League
+7) Number of half centuries of specific batter
+8) Number of centuries of specific batter
+9) point table
+10) specific batsman vs specific bowler
+11) top 5 run scorer of each  teams
+12) innings taken by specific batter to complete specific total run
+13) Players with most sixes in Indian Premier League
+14) Most madiens bowled in Indian Premier League
+15) Batsman dismissed by Harbhajan most time in IPL
+16) Stadium wise matches hosted in IPL
+17) Team , Season wise boundaries in IPL
+18) Players who has taken most catches in IPL
+19) Players with most man-of-the-matches in IPL
+20) Orange Cap/Purple cap holders season wise in IPL
+21) Number of 200+ score per team
+22) Number of finals played by team
+23) Strike rate of specific batsman in specific over_type(power_play,middle_overs,death_overs)
+24) Highest/Lowest scores of each season by wich team
+25) Highest run scorer and highest wicket taker team of each season
+26) In which overs given bowler takes most wicktes
+27) How toss win impacts the match win (which team utilized the toss win most)
+28) Which Player has played for most number of Teams in IPL
+29) Most matches captained by players
+
