@@ -23,20 +23,20 @@ Thank you for joining me on this exciting SQL adventure through the world of cri
 
 ## Questions
 
-1) Top 5 batsman in specific season
-2) Top 5 bowler(wicket Taken) in specific season
+1) Top 5 batsman in given season
+2) Top 5 bowler(wicket Taken) in given season
 3) Bowlers with most five wicket hauls in Indian Premier League
 4) Top 5 team score
 5) Top 5 individual score
 6) Players with most centuries in Indian Premier League
-7) Number of half centuries of specific batter
-8) Number of centuries of specific batter
+7) Number of half centuries of given batter
+8) Number of centuries of given batter
 9) point table
-10) specific batsman vs specific bowler
+10) specific batsman vs given bowler
 11) top 5 run scorer of each  teams
-12) innings taken by specific batter to complete specific total run
+12) innings taken by given batter to complete given total run
 13) Players with most sixes in Indian Premier League
-14) Most madiens bowled in Indian Premier League
+14) Most maiden bowled in Indian Premier League
 15) Batsman dismissed by Harbhajan most time in IPL
 16) Stadium wise matches hosted in IPL
 17) Team , Season wise boundaries in IPL
