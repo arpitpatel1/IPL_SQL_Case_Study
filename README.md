@@ -52,4 +52,7 @@ Thank you for joining me on this exciting SQL adventure through the world of cri
 27) How toss win impacts the match win (which team utilized the toss win most)
 28) Which Player has played for most number of Teams in IPL
 29) Most matches captained by players
+30) Players involved in most IPL final
+31) Most matches played by team on sunday
+32) On which day virat kohli scored century
 

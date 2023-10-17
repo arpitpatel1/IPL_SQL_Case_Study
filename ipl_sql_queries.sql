@@ -1,24 +1,35 @@
 
 use ipl;
+
 -- Some Preproccesing
 
 -- ALTER TABLE matches2
--- CHANGE COLUMN old_column2 new_column2 INT,
 -- CHANGE COLUMN id matches2_id INT;
 
-create view joined as select * from ipl.balls t1 left join ipl.matches t2 on t1.id1=t2.id left join ipl.matches2 t3 on t1.id1=t3.matches2_id;
-create table joined_table as select * from ipl.balls t1 left join ipl.matches t2 on t1.id1=t2.id left join ipl.matches2 t3 on t1.id1=t3.matches2_id;
+-- ALTER TABLE matches
+-- ADD COLUMN date_format DATE;
 
-ALTER table joined_table
-ADD COLUMN over_type varchar(12);
+-- UPDATE matches
+-- SET date_format = STR_TO_DATE(Date, '%Y-%m-%d');
 
-UPDATE joined_table
-SET over_type = 
-    CASE 
-        WHEN overs between 0 and 6 THEN 'power_play'
-        WHEN overs between 7 and 16 THEN 'middle_overs'
-        ELSE 'death_overs'
-    END;
+-- ALTER TABLE matches
+-- DROP COLUMN date,
+-- DROP COLUMN Season;
+
+-- create view joined as select * from ipl.balls t1 left join ipl.matches t2 on t1.id1=t2.id left join ipl.matches2 t3 on t1.id1=t3.matches2_id;
+-- create table joined_table as select * from ipl.balls t1 left join ipl.matches t2 on t1.id1=t2.id left join ipl.matches2 t3 on t1.id1=t3.matches2_id;
+
+
+-- ALTER table joined_table
+-- ADD COLUMN over_type varchar(12);
+
+-- UPDATE joined_table
+-- SET over_type = 
+--     CASE 
+--         WHEN overs between 0 and 6 THEN 'power_play'
+--         WHEN overs between 7 and 16 THEN 'middle_overs'
+--         ELSE 'death_overs'
+--     END;
 -------------------------------------------------------------------------------------------------------------------
 -- 1) Top 5 batsman in specific season
 SELECT batter,sum(batsman_run) as runs FROM joined
@@ -227,6 +238,18 @@ INNER JOIN (
 
 -- 30) Players involved in most IPL final
 select batter,COUNT(DISTINCT ID) as count from joined_table where MatchNumber='Final' group by batter order by count desc;
+
+-- 31) Most matches played by team on sunday
+select battingteam,count(distinct(id)) as matches_played from 
+(select * from joined_table where dayofweek(date_format) = 1) as sub group by battingteam 
+order by matches_played desc;
+
+-- 32) on which day virat kohli scored century
+SELECT DISTINCT date_format,SUM(batsman_run)
+FROM joined_table
+WHERE batter = 'V Kohli'
+GROUP BY date_format
+HAVING SUM(batsman_run) >= 100;
 
 -- top captains
 -- lowest economy rate
